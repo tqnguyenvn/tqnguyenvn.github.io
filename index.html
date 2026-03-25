@@ -47,6 +47,31 @@
       border-color: #aabbd1;
       transform: translateY(-1px);
     }
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.92);
+      color: var(--accent2);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .menu-toggle-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .menu-toggle-lines span {
+      display: block;
+      width: 16px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+    }
     #hero { min-height: 100vh; display: flex; align-items: center; padding: 9rem 6% 5rem; position: relative; overflow: hidden; }
     .hero-grid { position: absolute; inset: 0; opacity: 0.06; background-image: linear-gradient(to right, #8fb0d7 1px, transparent 1px), linear-gradient(to bottom, #8fb0d7 1px, transparent 1px); background-size: 80px 80px; }
     .hero-glow { position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(47,103,167,0.12) 0%, transparent 70%); top: 50%; left: 58%; transform: translate(-50%,-50%); pointer-events: none; }
@@ -55,29 +80,6 @@
     .hero-title { font-size: clamp(2.55rem, 5.4vw, 4.7rem); font-weight: 900; line-height: 1.06; letter-spacing: -0.04em; margin-bottom: 1.35rem; }
     .hero-title .hl { color: var(--accent2); }
     .hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 580px; line-height: 1.75; margin-bottom: 2.5rem; font-weight: 400; }
-    .home-stack { display: flex; flex-direction: column; }
-    .toggle-section {
-      display: none;
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      visibility: hidden;
-      padding-top: 0;
-      padding-bottom: 0;
-      transition: max-height 0.45s ease, opacity 0.3s ease, padding 0.3s ease, visibility 0.3s ease;
-    }
-    .toggle-section.is-open {
-      display: block;
-      max-height: 2400px;
-      opacity: 1;
-      visibility: visible;
-      padding-top: 7rem;
-      padding-bottom: 7rem;
-    }
-    .section-shell {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
     section { padding: 7rem 6%; }
     .section-label { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
     .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; margin-bottom: 1.2rem; }
@@ -95,12 +97,6 @@
     .service-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
     .service-bullets li { font-size: 0.88rem; color: var(--muted); display: flex; gap: 0.75rem; align-items: flex-start; }
     .service-bullets li::before { content: '\2192'; color: var(--accent); font-size: 0.8rem; margin-top: 0.15rem; flex-shrink: 0; }
-    .service-subblock { margin-top: 2rem; padding-top: 1.6rem; border-top: 1px solid var(--border); }
-    .service-subtitle { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
-    .service-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .service-mini-item { background: #f8fbff; padding: 1rem; }
-    .service-mini-title { font-size: 0.84rem; font-weight: 700; margin-bottom: 0.35rem; }
-    .service-mini-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
     #credentials { background: var(--bg); }
     .cred-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem; }
     .experience-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 2.5rem; }
@@ -143,7 +139,35 @@
     .footer-copy { font-size: 0.8rem; color: var(--muted); }
     .footer-links { display: flex; gap: 0.8rem; list-style: none; font-size: 0.8rem; color: var(--muted); }
     .footer-links a:hover { color: var(--accent2); transition: color 0.2s; }
-    @media (max-width: 960px) { nav { padding: 1rem 5%; } .nav-links { display: none; } section { padding: 5rem 5%; } .toggle-section.is-open { padding-top: 5rem; padding-bottom: 5rem; } .services-grid, .service-mini-grid, .experience-strip, .credentials-groups { grid-template-columns: 1fr; } .approach-layout, .contact-layout { grid-template-columns: 1fr; gap: 3rem; } footer { flex-direction: column; align-items: flex-start; } }
+    @media (max-width: 960px) {
+      nav { padding: 1rem 5%; }
+      .menu-toggle { display: inline-flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: calc(100% + 0.75rem);
+        right: 5%;
+        left: 5%;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: rgba(244,247,251,0.98);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 18px 40px rgba(16, 35, 63, 0.08);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { width: 100%; }
+      .nav-link, .nav-links a { width: 100%; }
+      section { padding: 5rem 5%; }
+      .services-grid, .service-mini-grid, .experience-strip, .credentials-groups { grid-template-columns: 1fr; }
+      .approach-layout, .contact-layout, .form-row { grid-template-columns: 1fr; gap: 2.2rem; }
+      .hero-content { max-width: 100%; }
+      .hero-title { max-width: 100%; }
+      .hero-tag { font-size: 0.68rem; }
+      .contact-info { gap: 1rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
@@ -151,7 +175,10 @@
     <a href="#hero" class="nav-logo">
       <svg viewBox="0 0 340 175" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="n-a" x1="40%" y1="0%" x2="60%" y2="100%"><stop offset="0%" stop-color="#5aabf0"/><stop offset="100%" stop-color="#1a4f9e"/></linearGradient><linearGradient id="n-sw" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1e5fa8"/><stop offset="100%" stop-color="#5aabf0"/></linearGradient></defs><text x="2" y="162" font-family="'Arial Black',Arial,sans-serif" font-size="168" font-weight="900" fill="url(#n-a)">A</text><path d="M 22,138 C 55,98 95,58 150,18" stroke="url(#n-sw)" stroke-width="10" fill="none" stroke-linecap="round"/><text x="112" y="90" font-family="'Arial Black',Arial,sans-serif" font-size="58" font-weight="900" fill="#10233f">SIA</text><text x="117" y="160" font-family="'Arial Black',Arial,sans-serif" font-size="58" font-weight="900" fill="#10233f">VENIR</text></svg>
     </a>
-    <ul class="nav-links"><li><button class="nav-link" type="button" data-target="services">Services</button></li><li><button class="nav-link" type="button" data-target="credentials">Credentials</button></li><li><a href="#contact">Contact</a></li></ul>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <span class="menu-toggle-lines"><span></span><span></span><span></span></span>
+    </button>
+    <ul class="nav-links" id="site-nav"><li><a href="#services">Services</a></li><li><a href="#credentials">Credentials</a></li><li><a href="#contact">Contact</a></li></ul>
   </nav>
 
   <section id="hero">
@@ -171,7 +198,7 @@
   </section>
 
   <div class="home-stack">
-    <section id="services" class="toggle-section section-shell" aria-hidden="true">
+    <section id="services">
       <div class="section-label">What we do</div>
       <h2 class="section-title">Two Specialist Arms</h2>
       <p class="section-sub">Focused engagements for senior decision-makers who need answers fast &mdash; not academic papers or accounting overhead.</p>
@@ -190,44 +217,22 @@
           </ul>
         </div>
         <div class="service-panel">
-          <div class="service-icon">&#128188;</div>
-          <div class="service-name">Corporate Finance Partner</div>
-          <div class="service-tagline">Helping SMEs turn financial data into decision-ready insights</div>
-          <p class="service-desc">A Business Snapshot to clarify profitability, cash dynamics, and key performance drivers &mdash; with expert guidance from professionals experienced in multinational finance and corporate planning.</p>
+        <div class="service-icon">&#128188;</div>
+        <div class="service-name">Corporate Finance Partner</div>
+        <div class="service-tagline">Turning financial data into decision-ready insight</div>
+        <p class="service-desc">We help SMEs translate financial information into a clearer management view, so leaders can understand performance, prioritise action, and make better decisions with confidence.</p>
         <ul class="service-bullets">
-          <li>Profitability &amp; cash flow snapshot (P&amp;L, margin, OPEX)</li>
-          <li>Driver analysis: bridge &amp; variance explanations</li>
-          <li>Finance workflow mapping (as-is &rarr; to-be)</li>
-          <li>Monthly performance template your team can maintain</li>
-          <li>Specialist support for foreign-owned SMEs in Vietnam</li>
+          <li>Decision-ready visibility on profitability, cash pressure, and performance trends</li>
+          <li>Bridge and variance analysis to explain what is really driving change</li>
+          <li>Management reporting that supports action, not just accounting follow-up</li>
+          <li>Finance workflow mapping to improve visibility and reduce friction</li>
+          <li>Templates and review structure your team can maintain over time</li>
         </ul>
-        <div class="service-subblock">
-          <div class="service-subtitle">Business Snapshot</div>
-          <p class="service-desc">A focused financial snapshot for SMEs to show where profit is created or eroded, where cash pressure comes from, and what is driving performance changes.</p>
-          <div class="service-mini-grid">
-            <div class="service-mini-item">
-              <div class="service-mini-title">Profitability Snapshot</div>
-              <div class="service-mini-desc">Short P&amp;L with revenue, cost of goods, margin, and key OPEX, with segment view where data allows.</div>
-            </div>
-            <div class="service-mini-item">
-              <div class="service-mini-title">Cash Snapshot</div>
-              <div class="service-mini-desc">Opening and closing cash movements with key drivers: collections, payments, payroll, tax, and capex.</div>
-            </div>
-            <div class="service-mini-item">
-              <div class="service-mini-title">Driver Analysis</div>
-              <div class="service-mini-desc">Bridge analysis highlighting the main factors explaining performance changes, period over period.</div>
-            </div>
-            <div class="service-mini-item">
-              <div class="service-mini-title">Finance Workflow</div>
-              <div class="service-mini-desc">High-level mapping of financial information flows, with a simplified to-be model to reduce administrative friction.</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
-    <section id="credentials" class="toggle-section section-shell" aria-hidden="true">
+    <section id="credentials">
       <div class="cred-header">
         <div><div class="section-label">Why AsiAvenir</div><h2 class="section-title">Our Credentials</h2></div>
         <p class="section-sub" style="max-width:380px;font-size:0.95rem;">Every engagement is led by senior economists with deep international experience and a proven track record communicating to the highest levels.</p>
@@ -300,7 +305,7 @@
       <svg viewBox="0 0 340 175" xmlns="http://www.w3.org/2000/svg" style="height:30px;width:auto;"><defs><linearGradient id="f-a" x1="40%" y1="0%" x2="60%" y2="100%"><stop offset="0%" stop-color="#5aabf0"/><stop offset="100%" stop-color="#1a4f9e"/></linearGradient><linearGradient id="f-sw" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1e5fa8"/><stop offset="100%" stop-color="#5aabf0"/></linearGradient></defs><text x="2" y="162" font-family="'Arial Black',Arial,sans-serif" font-size="168" font-weight="900" fill="url(#f-a)">A</text><path d="M 22,138 C 55,98 95,58 150,18" stroke="url(#f-sw)" stroke-width="10" fill="none" stroke-linecap="round"/><text x="112" y="90" font-family="'Arial Black',Arial,sans-serif" font-size="58" font-weight="900" fill="#10233f">SIA</text><text x="117" y="160" font-family="'Arial Black',Arial,sans-serif" font-size="58" font-weight="900" fill="#10233f">VENIR</text></svg>
     </div>
     <div class="footer-copy">&copy; 2026 AsiAvenir &middot; C&Ocirc;NG TY TNHH ASIAVENIR &middot; All rights reserved.</div>
-    <ul class="footer-links"><li><button class="nav-link" type="button" data-target="services">Services</button></li><li><button class="nav-link" type="button" data-target="credentials">Credentials</button></li><li><a href="#contact">Contact</a></li></ul>
+    <ul class="footer-links"><li><a href="#services">Services</a></li><li><a href="#credentials">Credentials</a></li><li><a href="#contact">Contact</a></li></ul>
   </footer>
 
   <script>
@@ -323,30 +328,24 @@
       document.getElementById('nav').style.borderBottomColor =
         window.scrollY > 20 ? 'var(--border)' : 'transparent';
     });
-    const toggleButtons = document.querySelectorAll('[data-target]');
-    const toggleSections = [...document.querySelectorAll('.toggle-section')];
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.getElementById('site-nav');
+    const navAnchors = navLinks ? navLinks.querySelectorAll('a') : [];
 
-    function setActiveTrigger(targetId) {
-      toggleButtons.forEach((button) => {
-        button.classList.toggle('is-active', button.dataset.target === targetId);
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        const willOpen = !navLinks.classList.contains('is-open');
+        navLinks.classList.toggle('is-open', willOpen);
+        menuToggle.setAttribute('aria-expanded', String(willOpen));
+      });
+
+      navAnchors.forEach((anchor) => {
+        anchor.addEventListener('click', () => {
+          navLinks.classList.remove('is-open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        });
       });
     }
-
-    function openSection(targetId) {
-      const section = document.getElementById(targetId);
-      if (!section) return;
-      const willOpen = !section.classList.contains('is-open');
-      section.classList.toggle('is-open', willOpen);
-      section.setAttribute('aria-hidden', String(!willOpen));
-      setActiveTrigger(willOpen ? targetId : '');
-      requestAnimationFrame(() => {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-
-    toggleButtons.forEach((button) => {
-      button.addEventListener('click', () => openSection(button.dataset.target));
-    });
   </script>
 </body>
 </html>
